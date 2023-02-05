@@ -18,6 +18,7 @@ public class TicTacToe implements ActionListener {
     TicTacToe(){
         //set game frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Tic-Tac-Toe");
         frame.setSize(800,800);
         frame.setResizable(false);
         frame.getContentPane().setBackground(new Color(50,50,50));
@@ -94,6 +95,7 @@ public class TicTacToe implements ActionListener {
     }
 
     private void check() {
+        turn++;
         String combination = "";
         int[] loc = new int[3];
         for(int i = 0; i < 8; i++){
@@ -148,10 +150,15 @@ public class TicTacToe implements ActionListener {
                     break;
             }
             if(combination.equals("XXX")){
-                Win(loc[0],loc[1],loc[2],"X");
+                Win(loc[0],loc[1],loc[2],"X wins");
             } else if (combination.equals("OOO")) {
-                Win(loc[0],loc[1],loc[2],"O");
+                Win(loc[0],loc[1],loc[2],"O wins");
             }
+        }
+        if(turn == 9){
+            System.out.println("Draw");
+            textField.setText("Draw");
+            popUp("Draw");
         }
     }
 
@@ -162,9 +169,12 @@ public class TicTacToe implements ActionListener {
         for (int i = 0; i < 9; i++){
             buttons[i].setEnabled(false);
         }
-        textField.setText(win +" wins");
+        textField.setText(win);
+        popUp(win);
+    }
 
-        int result = JOptionPane.showConfirmDialog(frame,"Do you want to play again?", win +" wins",
+    private void popUp(String win){
+        int result = JOptionPane.showConfirmDialog(frame,"Do you want to play again?", win,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if(result == JOptionPane.YES_OPTION){
@@ -182,5 +192,7 @@ public class TicTacToe implements ActionListener {
             buttons[i].setBackground(Color.LIGHT_GRAY);
             buttons[i].setEnabled(true);
         }
+        turn = 0;
+        firstTurn();
     }
 }
